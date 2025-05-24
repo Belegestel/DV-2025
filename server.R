@@ -38,6 +38,7 @@ function(input, output, session) {
       }
       #print(colnames(df))
       df = df[required_cols]
+      df$alt_baro = as.numeric(as.character(df$alt_baro))
       #print('Parse done')
       return(df)
     }
@@ -113,9 +114,9 @@ function(input, output, session) {
           lng = ~lon, lat = ~lat,
           icon = awesomeIcons(
             icon='plane',
-            iconColor='white',
+            iconColor='black',
             library='fa',
-            markerColor='gray'
+            markerColor='white'
           ),
           popup = ~paste(
             "Flight: ", flight, "<br>",
