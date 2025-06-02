@@ -165,30 +165,48 @@ function(input, output, session) {
   output$airlines_plot = renderPlotly({
     df = selected_planes()
     counts = as.data.frame(table(df$ownOp))
-    colnames(counts) = c("Airline", "Count")
-    counts = head(counts[order(-counts$Count), ], input$top_n_airlines)
-    counts$Airline = droplevels(counts$Airline)
-    counts$Airline = factor(counts$Airline, levels=counts$Airline)
-    plot_ly(counts, y=~Airline, x=~Count, type='bar', orientation='h',
-            marker=list(color='rgba(10, 10, 10, 0.7')) %>%
-      layout(title="Most common airlines",
-             xaxis=list(title="Airline"),
-             yaxis=list(title="Number of flights"),
-             showlegend=F)
+    if(nrow(counts) != 0) {
+      colnames(counts) = c("Airline", "Count")
+      counts = head(counts[order(-counts$Count), ], input$top_n_airlines)
+      counts$Airline = droplevels(counts$Airline)
+      counts$Airline = factor(counts$Airline, levels=counts$Airline)
+      plot_ly(counts, y=~Airline, x=~Count, type='bar', orientation='h',
+              marker=list(color='rgba(10, 10, 10, 0.7')) %>%
+        layout(title="Most common airlines",
+               xaxis=list(title="Airline"),
+               yaxis=list(title="Number of flights"),
+               showlegend=F)
+    }
+    else {
+      plot_ly() %>% 
+        layout(title="Most common airlines",
+               xaxis=list(title="Airline"),
+               yaxis=list(title="Number of flights"),
+               showlegend=F)
+    }
   })
   
   output$airplane_models_plot = renderPlotly({
     df = selected_planes()
     counts = as.data.frame(table(df$t))
-    colnames(counts) = c("Type", "Count")
-    counts = head(counts[order(-counts$Count), ], input$top_n_models)
-    counts$Type = droplevels(counts$Type)
-    counts$Type = factor(counts$Type, levels=counts$Type)
-    plot_ly(counts, y=~Type, x=~Count, type='bar', orientation='h',
-            marker=list(color='rgba(10, 10, 10, 0.7')) %>%
-      layout(title="Most common aircraft types",
-             xaxis=list(title="Aircraft type"),
-             yaxis=list(title="Number of flights"),
-             showlegend=F)
+    if(nrow(counts) != 0) {
+      colnames(counts) = c("Type", "Count")
+      counts = head(counts[order(-counts$Count), ], input$top_n_models)
+      counts$Type = droplevels(counts$Type)
+      counts$Type = factor(counts$Type, levels=counts$Type)
+      plot_ly(counts, y=~Type, x=~Count, type='bar', orientation='h',
+              marker=list(color='rgba(10, 10, 10, 0.7')) %>%
+        layout(title="Most common aircraft types",
+               xaxis=list(title="Aircraft type"),
+               yaxis=list(title="Number of flights"),
+               showlegend=F)
+    }
+    else {
+      plot_ly() %>% 
+        layout(title="Most common aircraft types",
+               xaxis=list(title="Aircraft type"),
+               yaxis=list(title="Number of flights"),
+               showlegend=F)
+    }
   })
 }
